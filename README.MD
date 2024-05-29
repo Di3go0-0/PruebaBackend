@@ -114,18 +114,21 @@ así de esta forma no se compromete las credenciales del usuario si el caso es q
 
 
 # Parte 2: Ejercicios de Código
-- SQL - Consulta
-    ``` sql
-    CREATE TABLE employees (
-    id INT PRIMARY KEY,
-    name VARCHAR(100),
-    department_id INT,
-    salary DECIMAL(10, 2)
+## SQL - Consulta
+Tienes dos tablas employees y departments en una base de datos relacional:
+
+ ``` sql
+        CREATE TABLE employees (
+        id INT PRIMARY KEY,
+        name VARCHAR(100),
+        department_id INT,
+        salary DECIMAL(10, 2)
+        );
+        CREATE TABLE departments (
+        id INT PRIMARY KEY,
+        name VARCHAR(100)
     );
-    CREATE TABLE departments (
-    id INT PRIMARY KEY,
-    name VARCHAR(100)
-    );
+ ```
 - Escribe una consulta SQL para encontrar el nombre del departamento que tiene el salario promedio más alto. (Trampa: Asegúrate de considerar el caso donde hay múltiples departamentos con el mismo salario promedio más alto.)
     ```sql
     SELECT dep.name AS "Departamento", AVG(emp.salary) AS "Salario Promedio"
@@ -157,7 +160,7 @@ así de esta forma no se compromete las credenciales del usuario si el caso es q
             FOREIGN KEY (department_id) REFERENCES departments(id)
         );
     ```
-    - En las llaves principales de las tablas se añadió un AUTO_INCREMENT que me ayudará a que que la id de cada tabla sea única ya que se va incrementar de 1 en 1 por sí sola, por lo que cuando vayamos a insertar datos no tenemos que insertar la id. También agregaría FOREIGN KEY (department_id) REFERENCES departments(id) en la tabla de employees para relacionar las tablas entre sí, esto me permitirá llevar un mejor control, ya que si algún departamento tiene empleado, no podríamos eliminar ese departamento.
+    - En las llaves principales de las tablas se añadió un `AUTO_INCREMENT` que me ayudará a que que la id de cada tabla sea única ya que se va incrementar de 1 en 1 por sí sola, por lo que cuando vayamos a insertar datos no tenemos que insertar la id. También agregaría `FOREIGN KEY (department_id) REFERENCES departments(id)` en la tabla de employees para relacionar las tablas entre sí, esto me permitirá llevar un mejor control, ya que si algún departamento tiene empleado, no podríamos eliminar ese departamento.
 
 ## Node.js - API Endpoint con Validaciones:
 - Implementa un endpoint en Node.js usando Express que permite crear un nuevo usuario. El  endpoint debe validar que:  El correo electrónico no esté ya registrado en una base de datos ficticia. La contraseña tenga al menos 8 caracteres, una letra mayúscula, una minúscula y un número. El nombre no esté vacío. Usa una estructura en memoria para simular la base de datos:
