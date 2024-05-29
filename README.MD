@@ -278,21 +278,44 @@ console.error(err.stack);
 res.status(500).json({ error: 'Something went wrong!' });
 });
 ```
-- El codigo proporcionado cumple con los requisitos datos, aquí una descripción:
-    - El primer middleware `app.use((req, res, next) => {...})` obtiene del request el `metodo HTTP` y tambien obtiene la `URL` o mas bien el `PATH` de la URL y lo imprime en la consola, y luego llama a `next()` para que pase al siguiente middleware.
-    - El segundo middleware `app.use((err, req, res, next) => {...})` recibe un error, el request, el response y el next, pero en este caso no se usa el next, se imprime el error en la consola y se responde con un status 500 y un mensaje de error en formato JSON.
-    - Sin embargo, podemos mejorar el mensaje de error para proporcionar detalles más específicos sobre el problema.
+- El codigo proporcionado cuenta con dos middlerwares,  aquí una descripción:
+    - El primer middleware `app.use((req, res, next) => {...})` obtiene del request el `metodo HTTP` y tambien obtiene la `URL` o mas bien el `PATH` de la URL y lo imprime en la consola, y luego llama a `next()` para que pase al siguiente middleware o la siguiente ruta.
+    - El segundo middleware `app.use((err, req, res, next) => {...})` este middlerware se encarga de manejar los errores, se activa una vez se llama un next() con algun argumento. 
+    Cuando está activo imprime el error en la consola y se responde con un status 500 y un mensaje de error en formato JSON.
+    - Sin embargo, el segundo middleware no se llame en ningun momento, aquí un codigo donde si se utiliza:
         ```javascript
+        const express = require('express');
+        const app = express();
+        // Middleware para registrar solicitudes
+        app.use((req, res, next) => {
+        console.log(`${req.method} ${req.url}`);
+        next();
+        });
+
+        app.get('/', (req, res) => {
+        res.send('Hello World');
+        });
+
+
+        app.get('/error', (req, res, next)=>{
+            try{
+                throw new Error("Hay un error")
+            }catch(e){
+                next(e);
+            }
+        })
+
         app.use((err, req, res, next) => {
             console.error(err.stack);
-            res.status(500).json({ 
-                message: 'Something went wrong!', 
-                error: err.message, 
-                stack: err.stack 
-            });
+            res.status(500).json({ error: 'Something went wrong!' });
+        });
+
+        app.listen(3000, () => {
+            console.log('Server running on port 3000');
         });
         ```
-        La respuesta JSON ahora contendrá un campo de respuesta que contiene información general, un campo de error que contiene mensajes de error específicos y un grupo que contiene errores llamados grupos.
+        En este código se simuló un error en un middleware de ruta a las solicitudes GET /error, con la línea `throw new Error("Hay un error")` simulamos un error asegurandonos de que este endpoint siempre dará un error.
+        Esto asegura que cualquier error no manejado en las rutas sea gestionado por el middleware de manejo de errores.
 
 ## Algoritmo de Ordenamiento:
 Escribe una función en JavaScript para ordenar una lista de números usando el algoritmo
