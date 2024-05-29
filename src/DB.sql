@@ -30,32 +30,6 @@ SELECT dep.name AS "Departamento", AVG(emp.salary) AS "Salario Promedio"
 FROM departments dep
 JOIN employees emp ON dep.id = emp.department_id
 GROUP BY dep.id
-ORDER BY AVG(emp.salary) DESC;
-
-SELECT dep.name AS "Departamento", AVG(emp.salary) AS "Salario Promedio"
-FROM departments dep
-JOIN employees emp ON dep.id = emp.department_id
-GROUP BY dep.id
-ORDER BY AVG(emp.salary) DESC
-LIMIT 1;
-
-SELECT dep.name AS "Departamento", AVG(emp.salary) AS "Salario Promedio"
-FROM departments dep
-JOIN employees emp ON dep.id = emp.department_id
-GROUP BY dep.id
-HAVING AVG(emp.salary) = (
-  SELECT AVG(emp2.salary) AS "Salario Promedio"
-  FROM employees emp2
-  GROUP BY emp2.department_id
-  ORDER BY "Salario Promedio" DESC
-  LIMIT 1
-)
-ORDER BY "Salario Promedio" DESC;
-
-SELECT dep.name AS "Departamento", AVG(emp.salary) AS "Salario Promedio"
-FROM departments dep
-JOIN employees emp ON dep.id = emp.department_id
-GROUP BY dep.id
 HAVING AVG(emp.salary) = (
     SELECT MAX(avgSalary)
     FROM (
@@ -66,6 +40,7 @@ HAVING AVG(emp.salary) = (
 )
 ORDER BY "Salario Promedio" DESC;
 
+-- Mi solución
 
 CREATE TABLE departments (
 id INT PRIMARY KEY AUTO_INCREMENT,
